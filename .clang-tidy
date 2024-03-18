@@ -15,7 +15,6 @@ ImplementationFileExtensions:
 HeaderFilterRegex: 'src/.*\.h$'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
-User:            jack
 CheckOptions:
   cert-dcl16-c.NewSuffixes: 'L;LL;LU;LLU'
   google-readability-namespace-comments.ShortNamespaceLines: '10'
