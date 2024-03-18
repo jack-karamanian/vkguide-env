@@ -5,7 +5,11 @@
   "dependencies": [
     {
       "name": "sdl2",
-      "features": ["vulkan", "x11", "wayland"]
+      "features": [
+        "vulkan",
+        { "name": "x11", "platform": "linux" },
+        { "name": "wayland", "platform": "linux" }
+      ]
     },
     {
       "name": "vulkan-headers"
