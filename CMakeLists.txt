@@ -18,7 +18,12 @@ find_package(absl CONFIG REQUIRED)
 
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra)
+target_compile_options(
+  ${CMAKE_PROJECT_NAME}
+  PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:Clang>>:-Wall
+    -Wextra>
+    $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 target_link_libraries(
   ${CMAKE_PROJECT_NAME}
   PRIVATE $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
