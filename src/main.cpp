@@ -27,13 +27,20 @@ int main(int, char **) {
 
   absl::Cleanup window_cleanup = [window] { SDL_DestroyWindow(window); };
 
-  vkb::Instance instance = vkb::InstanceBuilder{}
-                               .set_app_name("Vulkan Guide")
-                               .use_default_debug_messenger()
-                               .require_api_version(1, 3, 0)
-                               .enable_validation_layers(true)
-                               .build()
-                               .value();
+  auto instance_res = vkb::InstanceBuilder{}
+                          .set_app_name("Vulkan Guide")
+                          .use_default_debug_messenger()
+                          .require_api_version(1, 3, 0)
+                          .enable_validation_layers(true)
+                          .build();
+
+  if (!instance_res) {
+    spdlog::error("Failed to create Vulkan instance: {}",
+                  instance_res.error().message());
+    return EXIT_FAILURE;
+  }
+
+  vkb::Instance instance = instance_res.value();
 
   absl::Cleanup instance_cleanup = [instance] {
     vkb::destroy_instance(instance);
