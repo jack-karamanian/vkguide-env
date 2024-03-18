@@ -5,8 +5,9 @@
 !/.clang-format
 !/.clang-tidy
 !/.gitignore
-!/README.md
 !/.gitmodules
+!/.vscode
+!/README.md
 !/LICENSE
 !/vcpkg.json
 !/CMakeLists.txt
