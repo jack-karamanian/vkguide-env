@@ -1,5 +1,8 @@
 # Setup
 
+## Clone submodules
+1. `git submodule init && git submodule update`
+
 ## macOS
 1. Install the Vulkan SDK https://www.lunarg.com/vulkan-sdk/
 2. Setup Vulkan SDK environment variables
