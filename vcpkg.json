@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "vkguide-env",
+  "version": "1.0.0",
+  "dependencies": [
+    {
+      "name": "sdl2",
+      "features": ["vulkan", "x11", "wayland"]
+    },
+    {
+      "name": "vulkan-headers"
+    },
+    {
+      "name": "vulkan-memory-allocator"
+    },
+    {
+      "name": "glm"
+    },
+    {
+      "name": "fmt"
+    },
+    {
+      "name": "spdlog"
+    },
+    {
+      "name": "abseil"
+    }
+  ]
+}

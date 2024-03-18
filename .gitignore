@@ -1,0 +1,13 @@
+/*
+!src/
+!external/
+
+!/.clang-format
+!/.clang-tidy
+!/.gitignore
+!/README.md
+!/.gitmodules
+!/LICENSE
+!/vcpkg.json
+!/CMakeLists.txt
+!/CMakePresets.json
