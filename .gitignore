@@ -1,6 +1,8 @@
 /*
 !src/
+!shaders/
 !external/
+*.spv
 
 !/.clang-format
 !/.clang-tidy

@@ -28,6 +28,10 @@
     },
     {
       "name": "abseil"
+    },
+    {
+      "name": "imgui",
+      "features": ["sdl2-binding", "vulkan-binding"]
     }
   ]
 }

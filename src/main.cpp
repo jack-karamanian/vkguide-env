@@ -1,9 +1,15 @@
+#include "vulkan_engine.h"
 #include <SDL2/SDL.h>
 #include <VkBootstrap.h>
 #include <absl/cleanup/cleanup.h>
 #include <cstdlib>
+#include <glm/ext.hpp>
+#include <glm/glm.hpp>
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_vulkan.h>
 #include <spdlog/spdlog.h>
-#include <vulkan/vulkan.h>
+#include <vulkan/vulkan.hpp>
 
 constexpr int WindowWidth = 1920;
 constexpr int WindowHeight = 1080;
@@ -16,37 +22,17 @@ int main(int, char **) {
 
   absl::Cleanup sdl_cleanup = [] { SDL_Quit(); };
 
-  SDL_Window *window = SDL_CreateWindow("Vulkan Guide", SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED, WindowWidth,
-                                        WindowHeight, SDL_WINDOW_VULKAN);
-
-  if (window == nullptr) {
-    spdlog::error("SDL_CreateWindow failed: {}", SDL_GetError());
+  VulkanEngine vulkan_engine;
+  if (!vulkan_engine.init(WindowWidth, WindowHeight)) {
     return EXIT_FAILURE;
   }
-
-  absl::Cleanup window_cleanup = [window] { SDL_DestroyWindow(window); };
-
-  auto instance_res = vkb::InstanceBuilder{}
-                          .set_app_name("Vulkan Guide")
-                          .use_default_debug_messenger()
-                          .require_api_version(1, 3, 0)
-                          .enable_validation_layers(true)
-                          .build();
-
-  if (!instance_res) {
-    spdlog::error("Failed to create Vulkan instance: {}",
-                  instance_res.error().message());
-    return EXIT_FAILURE;
-  }
-
-  vkb::Instance instance = instance_res.value();
-
-  absl::Cleanup instance_cleanup = [instance] {
-    vkb::destroy_instance(instance);
-  };
 
   bool quit = false;
+
+  ComputePushConstants push_constants = {
+      .data1 = glm::vec4(1, 0, 0, 1),
+      .data2 = glm::vec4(0, 0, 1, 1),
+  };
 
   while (!quit) {
     SDL_Event event;
@@ -56,7 +42,24 @@ int main(int, char **) {
         quit = true;
         break;
       }
+
+      ImGui_ImplSDL2_ProcessEvent(&event);
     }
+    ImGui_ImplVulkan_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::ShowDemoWindow();
+
+    ImGui::Begin("Test");
+    ImGui::ColorPicker4("Data 1", glm::value_ptr(push_constants.data1));
+    ImGui::ColorPicker4("Data 2", glm::value_ptr(push_constants.data2));
+
+    ImGui::End();
+
+    ImGui::Render();
+
+    vulkan_engine.draw(push_constants);
   }
 
   return EXIT_SUCCESS;
